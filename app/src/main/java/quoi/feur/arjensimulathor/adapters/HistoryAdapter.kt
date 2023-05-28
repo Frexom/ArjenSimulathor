@@ -40,7 +40,7 @@ class HistoryAdapter: BaseAdapter {
         val heading: TextView = convertView.findViewById(R.id.historyHeading)
         val subHeading: TextView = convertView.findViewById(R.id.historySubHeading)
 
-        val item = entries[entries.size-1-position]
+        val item = entries[position]
         heading.text = item.toString()
         subHeading.text = "Commentaire : ".plus(item.comment)
         return convertView

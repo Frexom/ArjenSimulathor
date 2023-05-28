@@ -21,8 +21,6 @@ class HistoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-
         val activity = requireActivity()
         val view = inflater.inflate(R.layout.fragment_history, container, false)
 
@@ -45,7 +43,7 @@ class HistoryFragment : Fragment() {
 
                     setPositiveButton("Oui", DialogInterface.OnClickListener { _, _ ->
 
-                        Entry.all.removeAt(Entry.all.size - position - 1)
+                        Entry.all.removeAt(position)
                         adapter!!.notifyDataSetChanged()
                         pref.edit().remove("history").putString("history", Entry.allToJSON())
                             .apply()
