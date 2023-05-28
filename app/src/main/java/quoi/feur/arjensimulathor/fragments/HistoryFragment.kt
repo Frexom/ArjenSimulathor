@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
-import android.widget.SimpleAdapter
 import androidx.appcompat.app.AlertDialog
 import quoi.feur.arjensimulathor.R
 import quoi.feur.arjensimulathor.adapters.HistoryAdapter

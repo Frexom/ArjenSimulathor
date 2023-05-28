@@ -25,15 +25,16 @@ class HomeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 
+        val activity = requireActivity()
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        val pref = requireActivity().applicationContext!!.getSharedPreferences("arjensim", Context.MODE_PRIVATE)!!
+        val pref = activity.applicationContext!!.getSharedPreferences("arjensim", Context.MODE_PRIVATE)!!
 
         var historyString = pref.getString("history", "")
 
         if(historyString == ""){
             historyString = JSONArray(arrayOf<Entry>()).toString()
-            pref!!.edit().putString("history", historyString).apply()
+            pref.edit().putString("history", historyString).apply()
         }
 
         Entry.all = Entry.createListFromJSONArray(JSONArray(historyString))
@@ -43,7 +44,7 @@ class HomeFragment : Fragment() {
         val amount = view.findViewById<EditText>(R.id.expenseAmount)
 
         val roller = view.findViewById<Spinner>(R.id.expensePerson)
-        val personsAdapter = ArrayAdapter(requireActivity().applicationContext, R.layout.spinner_item, arrayOf("Bouéfoubi", "Gobi"))
+        val personsAdapter = ArrayAdapter(activity.applicationContext, R.layout.spinner_item, arrayOf("Bouéfoubi", "Gobi"))
         roller.adapter = personsAdapter
 
         checkWhoIsRicher(view)
@@ -52,17 +53,21 @@ class HomeFragment : Fragment() {
             val moneyAmount = amount.text.toString()
             val person = roller.selectedItem.toString()
             if(moneyAmount ==  "" || person == ""){
-                Toast.makeText(requireActivity().applicationContext, "Please input the person and the amount.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity.applicationContext, "Please input the person and the amount.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            Entry.all.add(Entry(LocalDate.now(), person, moneyAmount.toDouble(), commentEdit.text.toString()))
+            val newEntry = Entry(LocalDate.now(), person, moneyAmount.toDouble(), commentEdit.text.toString())
+            if(!Entry.checkIfPresent(newEntry)) {
+                Entry.all.add(newEntry)
+                pref.edit().remove("history").putString("history", Entry.allToJSON()).apply()
 
-            pref.edit().remove("history").putString("history", Entry.allToJSON()).apply()
+                checkWhoIsRicher(view)
 
-            checkWhoIsRicher(view)
-
-            amount.text.clear()
-            commentEdit.text.clear()
+                amount.text.clear()
+                commentEdit.text.clear()
+            }else {
+                Toast.makeText(activity.applicationContext, "Il y a déjà une entrée similaire dans l'historique.", Toast.LENGTH_SHORT).show()
+            }
         }
 
 

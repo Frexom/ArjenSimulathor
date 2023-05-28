@@ -1,5 +1,6 @@
 package quoi.feur.arjensimulathor.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -36,8 +37,8 @@ class HistoryAdapter: BaseAdapter {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val convertView = inflater.inflate(R.layout.history_list_item, null)
-        var heading: TextView = convertView.findViewById(R.id.historyHeading)
-        var subHeading: TextView = convertView.findViewById(R.id.historySubHeading)
+        val heading: TextView = convertView.findViewById(R.id.historyHeading)
+        val subHeading: TextView = convertView.findViewById(R.id.historySubHeading)
 
         val item = entries[entries.size-1-position]
         heading.text = item.toString()

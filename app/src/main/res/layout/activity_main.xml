@@ -43,6 +43,11 @@
             android:layout_height="match_parent"
             android:text="Historique" />
 
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Paramètres" />
+
     </com.google.android.material.tabs.TabLayout>
 
 </RelativeLayout>

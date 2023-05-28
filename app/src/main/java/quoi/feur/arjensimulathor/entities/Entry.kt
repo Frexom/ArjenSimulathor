@@ -2,6 +2,7 @@ package quoi.feur.arjensimulathor.entities
 
 import org.json.JSONArray
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.TextStyle
 import java.util.*
 import kotlin.collections.HashMap
@@ -55,6 +56,25 @@ class Entry(val date: LocalDate , val person: String, val amount: Double, val co
             result.add(richer)
             result.add(abs(gobiMoney - bouefoubiMoney).toString())
             return result
+        }
+
+        fun checkIfPresent(entry: Entry) : Boolean{
+            all.forEach{
+                if(it.person == entry.person && it.amount == entry.amount && it.date == entry.date)
+                    return true
+            }
+            return false
+        }
+
+        fun mergeExternal(mergeList: LinkedList<Entry>){
+            mergeList.forEach{mergeItem ->
+                if(!checkIfPresent(mergeItem)){
+                    all.add(mergeItem)
+                }
+            }
+            all.sortByDescending {
+                it.date
+            }
         }
 
     }
