@@ -65,11 +65,11 @@
         android:id="@+id/editTextMerge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
         android:layout_marginTop="-40dp"
         android:ems="10"
         android:hint="Données..."
         android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textExport"
         app:layout_constraintTop_toTopOf="@+id/textExport" />
 
