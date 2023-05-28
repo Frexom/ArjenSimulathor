@@ -13,12 +13,14 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="CustomListItem Heading"
+        android:textColor="@color/white"
         android:textSize="16sp" />
 
     <TextView
         android:id="@+id/historySubHeading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CustomListItem SubHeading" />
+        android:text="CustomListItem SubHeading"
+        android:textColor="@color/grey"/>
 
 </LinearLayout>

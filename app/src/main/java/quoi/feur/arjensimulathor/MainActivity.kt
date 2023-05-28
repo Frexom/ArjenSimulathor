@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity() {
         viewPagerAdapter = ViewPagerAdapter(this)
         viewPager2.adapter = viewPagerAdapter
 
+        android.R.layout.simple_list_item_1
+
         tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (tab != null) {
