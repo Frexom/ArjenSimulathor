@@ -11,10 +11,13 @@ import android.widget.ListView
 import android.widget.SimpleAdapter
 import androidx.appcompat.app.AlertDialog
 import quoi.feur.arjensimulathor.R
+import quoi.feur.arjensimulathor.adapters.HistoryAdapter
 import quoi.feur.arjensimulathor.entities.Entry
 
 
 class HistoryFragment : Fragment() {
+
+    var adapter: HistoryAdapter? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,23 +30,8 @@ class HistoryFragment : Fragment() {
         val pref = activity.applicationContext.getSharedPreferences("arjensim", Context.MODE_PRIVATE)
         val list = view.findViewById<ListView>(R.id.historyView)
 
-        val data: ArrayList<Map<String, String>> = ArrayList();
-        Entry.all.forEach{
-            val datum = HashMap<String, String>()
-            datum["first"] = it.toString()
-            datum["second"] = "Commentaire : ".plus(it.comment)
-            data.add(datum)
-        }
-        data.reverse()
 
-        val adapter = SimpleAdapter(
-            activity.applicationContext,
-            data,
-            android.R.layout.simple_list_item_2,
-            arrayOf<String>("first", "second"),
-            intArrayOf(android.R.id.text1, android.R.id.text2)
-
-        )
+        adapter = HistoryAdapter(Entry.all, activity.applicationContext)
         list.adapter = adapter
 
 
@@ -58,9 +46,8 @@ class HistoryFragment : Fragment() {
 
                     setPositiveButton("Oui", DialogInterface.OnClickListener { _, _ ->
 
-                        Entry.all.removeAt(data.size - position - 1)
-                        data.removeAt(position)
-                        adapter.notifyDataSetChanged()
+                        Entry.all.removeAt(Entry.all.size - position - 1)
+                        adapter!!.notifyDataSetChanged()
                         pref.edit().remove("history").putString("history", Entry.allToJSON())
                             .apply()
                     })
@@ -75,5 +62,10 @@ class HistoryFragment : Fragment() {
 
 
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adapter!!.notifyDataSetChanged()
     }
 }
