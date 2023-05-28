@@ -24,17 +24,15 @@
 
     <ListView
         android:id="@+id/historyView"
-        android:layout_width="409dp"
-        android:layout_height="662dp"
-        android:layout_marginTop="30dp"
+        style="@style/ListViewStyle.Night"
+        android:layout_width="match_parent"
+        android:layout_height="664dp"
         android:background="@color/black"
         android:divider="@color/black"
         android:dividerHeight="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="1.0"
-        style="@style/ListViewStyle.Night"/>
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
