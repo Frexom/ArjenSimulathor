@@ -14,7 +14,7 @@ import org.json.JSONArray
 import android.widget.ArrayAdapter
 import quoi.feur.arjensimulathor.R
 import quoi.feur.arjensimulathor.entities.Entry
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 class HomeFragment : Fragment() {
 
@@ -56,9 +56,8 @@ class HomeFragment : Fragment() {
                 Toast.makeText(activity.applicationContext, "Please input the person and the amount.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            val newEntry = Entry(LocalDate.now(), person, moneyAmount.toDouble(), commentEdit.text.toString())
-            if(!Entry.checkIfPresent(newEntry)) {
-                Entry.all.add(newEntry)
+            val newEntry = Entry(LocalDateTime.now(), person, moneyAmount.toDouble(), commentEdit.text.toString())
+            if(Entry.addToAll(newEntry)) {
                 pref.edit().remove("history").putString("history", Entry.allToJSON()).apply()
 
                 checkWhoIsRicher(view)

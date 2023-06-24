@@ -1,14 +1,12 @@
 package quoi.feur.arjensimulathor.entities
 
 import org.json.JSONArray
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.TextStyle
 import java.util.*
-import kotlin.collections.HashMap
 import kotlin.math.abs
 
-class Entry(val date: LocalDate , val person: String, val amount: Double, val comment: String){
+class Entry(val datetime: LocalDateTime, val person: String, val amount: Double, val comment: String){
 
     companion object{
         var all: LinkedList<Entry> = LinkedList()
@@ -17,12 +15,12 @@ class Entry(val date: LocalDate , val person: String, val amount: Double, val co
             val entryList = LinkedList<Entry>()
             for (i in 0 until array.length()) {
                 val json = array.getJSONObject(i)
-                val date = LocalDate.parse(json.getString("date"))
+                val datetime = LocalDateTime.parse(json.getString("datetime"))
                 val person = json.getString("person")
                 val amount = json.getDouble("amount")
                 val comment = json.getString("comment")
 
-                entryList.add(Entry(date, person, amount, comment))
+                entryList.add(Entry(datetime, person, amount, comment))
             }
             return entryList
         }
@@ -30,7 +28,7 @@ class Entry(val date: LocalDate , val person: String, val amount: Double, val co
         fun allToJSON(): String{
             var json = "["
             all.forEach{entry ->
-                json += "{\"date\" : \"${entry.date}\", \"person\" : \"${entry.person}\", \"amount\" : ${entry.amount}, \"comment\" : \"${entry.comment}\"}, "
+                json += "{\"datetime\" : \"${entry.datetime}\", \"person\" : \"${entry.person}\", \"amount\" : ${entry.amount}, \"comment\" : \"${entry.comment}\"}, "
             }
 
             if(json.length > 5){
@@ -58,10 +56,22 @@ class Entry(val date: LocalDate , val person: String, val amount: Double, val co
             return result
         }
 
-        fun checkIfPresent(entry: Entry) : Boolean{
+        fun addToAll(entry: Entry): Boolean{
+            if(!checkIfPresent(entry)) {
+                all.add(entry)
+                sortByDate()
+                return true
+            }
+            return false
+        }
+
+        private fun checkIfPresent(entry: Entry) : Boolean{
             all.forEach{
-                if(it.person == entry.person && it.amount == entry.amount && it.date == entry.date)
-                    return true
+                if(it.person == entry.person && it.amount == entry.amount){
+                    if(it.datetime.year == entry.datetime.year && it.datetime.dayOfYear == entry.datetime.dayOfYear){
+                        return true
+                    }
+                }
             }
             return false
         }
@@ -72,14 +82,18 @@ class Entry(val date: LocalDate , val person: String, val amount: Double, val co
                     all.add(mergeItem)
                 }
             }
+            sortByDate()
+        }
+
+        private fun sortByDate(){
             all.sortByDescending {
-                it.date
+                it.datetime
             }
         }
 
     }
 
     override fun toString(): String{
-        return "${person}, ${date.dayOfMonth} ${date.month.getDisplayName(TextStyle.FULL, Locale.FRANCE)} ${date.year} : ${amount}€"
+        return "${person}, ${datetime.dayOfMonth} ${datetime.month.getDisplayName(TextStyle.FULL, Locale.FRANCE)} ${datetime.year} : ${amount}€"
     }
 }
