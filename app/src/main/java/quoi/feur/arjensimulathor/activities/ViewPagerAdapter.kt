@@ -1,4 +1,4 @@
-package quoi.feur.arjensimulathor
+package quoi.feur.arjensimulathor.activities
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

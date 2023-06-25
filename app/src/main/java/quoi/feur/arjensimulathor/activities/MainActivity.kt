@@ -1,15 +1,16 @@
-package quoi.feur.arjensimulathor
+package quoi.feur.arjensimulathor.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
+import quoi.feur.arjensimulathor.R
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var tabLayout: TabLayout
     lateinit var viewPager2: ViewPager2
-    lateinit var viewPagerAdapter: ViewPagerAdapter
+    private lateinit var viewPagerAdapter: ViewPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

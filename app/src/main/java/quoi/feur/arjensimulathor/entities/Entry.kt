@@ -10,7 +10,8 @@ class Entry(val datetime: LocalDateTime, val person: String, val amount: Double,
 
     companion object{
         var all: LinkedList<Entry> = LinkedList()
-
+        val daysOfWeek = arrayOf("Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche")
+        val months = arrayOf("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Spetembre", "Octobre", "Novembre", "Décembre")
         fun createListFromJSONArray(array: JSONArray) : LinkedList<Entry> {
             val entryList = LinkedList<Entry>()
             for (i in 0 until array.length()) {
@@ -39,8 +40,8 @@ class Entry(val datetime: LocalDateTime, val person: String, val amount: Double,
         }
 
         fun getDifference(): LinkedList<String>{
-            var gobiMoney: Double = .0
-            var bouefoubiMoney: Double = .0
+            var gobiMoney = .0
+            var bouefoubiMoney = .0
             all.forEach{
                 if(it.person == "Gobi"){
                     gobiMoney += it.amount
@@ -94,6 +95,28 @@ class Entry(val datetime: LocalDateTime, val person: String, val amount: Double,
     }
 
     override fun toString(): String{
-        return "${person}, ${datetime.dayOfMonth} ${datetime.month.getDisplayName(TextStyle.FULL, Locale.FRANCE)} ${datetime.year} : ${amount}€"
+        return "${person}, ${datetime.dayOfMonth} ${datetime.month.getDisplayName(TextStyle.FULL, Locale.FRANCE)} ${datetime.year} : ${getAmountString()}€"
+    }
+
+    fun getAmountString(): String {
+        return "%.2f".format(amount)
+    }
+
+    fun getPrettyDate(): String{
+        var date =  "${daysOfWeek[datetime.dayOfWeek.value-1]} ${datetime.dayOfMonth} ${months[datetime.month.value-1]} ${datetime.year}, "
+        if(datetime.hour < 10){
+            date += "0"
+        }
+        date += datetime.hour
+        date += "h"
+        if(datetime.minute < 10){
+            date += "0"
+        }
+        date += datetime.minute
+        return date
+    }
+
+    fun getCleanComment(): String{
+        return if(comment != ""){comment}else{"Pas de commentaire"}
     }
 }

@@ -30,7 +30,6 @@ class SettingsFragment : Fragment() {
         view.findViewById<Button>(R.id.exportButton).setOnClickListener {
             val clip = ClipData.newPlainText("Exported Arjen Simulathor history", Entry.allToJSON())
             clipboardManager.setPrimaryClip(clip)
-            Toast.makeText(activity.applicationContext, "Historique copié dans le presse-papiers.", Toast.LENGTH_SHORT).show()
         }
 
         view.findViewById<Button>(R.id.mergeButton).setOnClickListener{
