@@ -12,9 +12,6 @@
         android:theme="@style/Theme.AppCompat.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".GroceryAdapter"
-            android:exported="false" />
-        <activity
             android:name=".activities.EntryActivity"
             android:exported="false" />
         <activity

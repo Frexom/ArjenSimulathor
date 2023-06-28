@@ -6,7 +6,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import quoi.feur.arjensimulathor.fragments.GroceriesFragment
 import quoi.feur.arjensimulathor.fragments.HistoryFragment
 import quoi.feur.arjensimulathor.fragments.HomeFragment
-import quoi.feur.arjensimulathor.fragments.SettingsFragment
 
 class ViewPagerAdapter(fragmentActivity: FragmentActivity) :
     FragmentStateAdapter(fragmentActivity) {
@@ -20,7 +19,6 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity) :
             0 -> HomeFragment()
             1 -> GroceriesFragment()
             2 -> HistoryFragment()
-            3 -> SettingsFragment()
             else -> HomeFragment()
         }
     }

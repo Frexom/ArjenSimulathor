@@ -31,8 +31,8 @@ class EntryActivity : AppCompatActivity() {
 
         // Obtaining views
         deleteButton = findViewById(R.id.deleteEntry)
-        detailsHeader = findViewById(R.id.detailsHeader)
-        detailsSubheader = findViewById(R.id.detailsSubheader)
+        detailsHeader = findViewById(R.id.header)
+        detailsSubheader = findViewById(R.id.subheader)
         fullComment = findViewById(R.id.fullComment)
 
 

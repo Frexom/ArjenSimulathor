@@ -2,6 +2,8 @@ package quoi.feur.arjensimulathor.fragments
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -22,7 +24,6 @@ class GroceriesFragment : Fragment() {
     private var adapter: GroceryAdapter? = null
     private var optionsMenuButton: ImageButton? = null
     private var pref: SharedPreferences? = null
-    private var activity: Activity? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,8 +53,8 @@ class GroceriesFragment : Fragment() {
         list.setOnItemClickListener { _, _, position, _ ->
         }
 
-        view.findViewById<Button>(R.id.groceriesAdd).setOnClickListener {
-            showDialog()
+        view.findViewById<Button>(R.id.addButton).setOnClickListener {
+            addNewEntryDialog()
         }
 
         optionsMenuButton = view.findViewById<ImageButton>(R.id.optionsMenu)
@@ -69,9 +70,10 @@ class GroceriesFragment : Fragment() {
         adapter!!.notifyDataSetChanged()
     }
 
-    private fun showDialog(){
+    private fun addNewEntryDialog(){
         val activity = requireActivity()
         val dialog = Dialog(activity)
+
         dialog.setContentView(R.layout.groceries_add_popup)
 
         val amountInput = dialog.findViewById<EditText>(R.id.inputGroceryAmount)
@@ -109,17 +111,72 @@ class GroceriesFragment : Fragment() {
         popupMenu.menuInflater.inflate(R.menu.groceries_menu, popupMenu.menu)
         popupMenu.setOnMenuItemClickListener {
             if(it.itemId == R.id.deleteCheckedEntries) {
-                for (i in GroceryEntry.all.size - 1 downTo 0) {
-                    if (GroceryEntry.all[i].checked) {
-                        GroceryEntry.all.removeAt(i)
-                    }
-                }
-                adapter!!.notifyDataSetChanged()
-                pref!!.edit().remove("groceries").putString("groceries", GroceryEntry.allToJSON()).apply()
+                deleteCheckedEntries()
             }
+            if(it.itemId == R.id.exportUncheckedEntries){
+                exportUncheckedEntries()
+            }
+            if(it.itemId == R.id.importExternalEntries){
+                showImportDialog()
+            }
+
 
             true
         }
         popupMenu.show()
+    }
+
+    private fun deleteCheckedEntries(){
+        for (i in GroceryEntry.all.size - 1 downTo 0) {
+            if (GroceryEntry.all[i].checked) {
+                GroceryEntry.all.removeAt(i)
+            }
+        }
+        adapter!!.notifyDataSetChanged()
+        pref!!.edit().remove("groceries").putString("groceries", GroceryEntry.allToJSON()).apply()
+    }
+
+    private fun exportUncheckedEntries(){
+        val clipboardManager = requireActivity().applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("Exported Arjen Simulathor groceries list", GroceryEntry.exportUnchecked())
+        clipboardManager.setPrimaryClip(clip)
+    }
+
+    private fun showImportDialog(){
+        val activity = requireActivity()
+
+
+        val dialog = Dialog(activity)
+
+        dialog.setContentView(R.layout.groceries_import_popup)
+        dialog.findViewById<Button>(R.id.submitButton).setOnClickListener {
+            importExternalEntries(dialog, activity)
+        }
+        dialog.show()
+    }
+
+    private fun importExternalEntries(dialog: Dialog, activity: Activity){
+        val editText = dialog.findViewById<EditText>(R.id.groceriesImportData)
+        val importText = editText.text.toString()
+        editText.text.clear()
+
+        if(importText != "") {
+            try {
+                val entriesToAdd = GroceryEntry.createListFromJSONArray(JSONArray(importText))
+                for(entry in entriesToAdd){
+                    GroceryEntry.all.add(entry)
+                }
+                GroceryEntry.sortByDate()
+                pref!!.edit().remove("groceries").putString("groceries", GroceryEntry.allToJSON()).apply()
+                adapter!!.notifyDataSetChanged()
+                Toast.makeText(activity.applicationContext, "La liste a été importée!", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }catch (e: org.json.JSONException){
+                Toast.makeText(activity.applicationContext, "L'import a échoué, essayer de ré-exporter les données.", Toast.LENGTH_SHORT).show()
+            }
+        }
+        else{
+            Toast.makeText(activity.applicationContext, "Veuillez entrer des données pour effectuer une fusion.", Toast.LENGTH_SHORT).show()
+        }
     }
 }

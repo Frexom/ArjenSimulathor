@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.CheckBox
 import android.widget.TextView
+import android.widget.Toast
 import quoi.feur.arjensimulathor.R
 import quoi.feur.arjensimulathor.entities.GroceryEntry
 import quoi.feur.arjensimulathor.entities.HistoryEntry
@@ -51,9 +52,8 @@ class GroceryAdapter(entries: LinkedList<GroceryEntry>, applicationContext: Cont
         subHeading.text = subheadingText
 
         val checkbox = view.findViewById<CheckBox>(R.id.groceriesCheckbox)
-        if(item.checked){
-            checkbox.isChecked = true
-        }
+        checkbox.isChecked = item.checked
+
 
         val pref = context.getSharedPreferences("arjensim", Context.MODE_PRIVATE)!!
         checkbox.setOnClickListener {

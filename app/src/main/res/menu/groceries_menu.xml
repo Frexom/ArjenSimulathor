@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/exportUncheckedEntries"
+        android:title="Exporter la liste" />
+    <item
+        android:id="@+id/importExternalEntries"
+        android:title="Importer une liste" />
+    <item
         android:id="@+id/deleteCheckedEntries"
         android:title="Supprimer les entrées validées" />
 </menu>

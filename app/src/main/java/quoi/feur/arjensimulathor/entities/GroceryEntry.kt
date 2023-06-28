@@ -39,12 +39,27 @@ class GroceryEntry(val amount:Double, val unit:GroceryUnit, val name:String, val
             return json
         }
 
+        fun exportUnchecked():String{
+            var json = "["
+            all.forEach { entry ->
+                if (!entry.checked) {
+                    json += "{\"amount\" : ${entry.amount}, \"unit\" : \"${entry.unit.value()}\", \"name\" : \"${entry.name}\", \"datetime\" : \"${entry.datetime}\", \"checked\" : \"${entry.checked}\"}, "
+                }
+            }
+
+            if(json.length > 5){
+                json = json.substring(0, json.length-2)
+            }
+            json += "]"
+            return json
+        }
+
         fun addToAll(entry: GroceryEntry): Boolean{
             all.add(entry)
             return true
         }
 
-        private fun sortByDate(){
+        fun sortByDate(){
             all.sortBy {
                 it.datetime
             }
