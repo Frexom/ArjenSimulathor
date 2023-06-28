@@ -6,14 +6,14 @@ import java.time.format.TextStyle
 import java.util.*
 import kotlin.math.abs
 
-class Entry(val datetime: LocalDateTime, val person: String, val amount: Double, val comment: String){
+class HistoryEntry(val datetime: LocalDateTime, val person: String, val amount: Double, val comment: String){
 
     companion object{
-        var all: LinkedList<Entry> = LinkedList()
+        var all: LinkedList<HistoryEntry> = LinkedList()
         val daysOfWeek = arrayOf("Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche")
         val months = arrayOf("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Spetembre", "Octobre", "Novembre", "Décembre")
-        fun createListFromJSONArray(array: JSONArray) : LinkedList<Entry> {
-            val entryList = LinkedList<Entry>()
+        fun createListFromJSONArray(array: JSONArray) : LinkedList<HistoryEntry> {
+            val entryList = LinkedList<HistoryEntry>()
             for (i in 0 until array.length()) {
                 val json = array.getJSONObject(i)
                 val datetime = LocalDateTime.parse(json.getString("datetime"))
@@ -21,7 +21,7 @@ class Entry(val datetime: LocalDateTime, val person: String, val amount: Double,
                 val amount = json.getDouble("amount")
                 val comment = json.getString("comment")
 
-                entryList.add(Entry(datetime, person, amount, comment))
+                entryList.add(HistoryEntry(datetime, person, amount, comment))
             }
             return entryList
         }
@@ -57,7 +57,7 @@ class Entry(val datetime: LocalDateTime, val person: String, val amount: Double,
             return result
         }
 
-        fun addToAll(entry: Entry): Boolean{
+        fun addToAll(entry: HistoryEntry): Boolean{
             if(!checkIfPresent(entry)) {
                 all.add(entry)
                 sortByDate()
@@ -66,7 +66,7 @@ class Entry(val datetime: LocalDateTime, val person: String, val amount: Double,
             return false
         }
 
-        private fun checkIfPresent(entry: Entry) : Boolean{
+        private fun checkIfPresent(entry: HistoryEntry) : Boolean{
             all.forEach{
                 if(it.person == entry.person && it.amount == entry.amount){
                     if(it.datetime.year == entry.datetime.year && it.datetime.dayOfYear == entry.datetime.dayOfYear){
@@ -77,7 +77,7 @@ class Entry(val datetime: LocalDateTime, val person: String, val amount: Double,
             return false
         }
 
-        fun mergeExternal(mergeList: LinkedList<Entry>){
+        fun mergeExternal(mergeList: LinkedList<HistoryEntry>){
             mergeList.forEach{mergeItem ->
                 if(!checkIfPresent(mergeItem)){
                     all.add(mergeItem)

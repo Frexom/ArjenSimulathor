@@ -13,7 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import org.json.JSONArray
 import quoi.feur.arjensimulathor.R
-import quoi.feur.arjensimulathor.entities.Entry
+import quoi.feur.arjensimulathor.entities.HistoryEntry
 
 
 class SettingsFragment : Fragment() {
@@ -28,7 +28,7 @@ class SettingsFragment : Fragment() {
         val clipboardManager = activity.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
         view.findViewById<Button>(R.id.exportButton).setOnClickListener {
-            val clip = ClipData.newPlainText("Exported Arjen Simulathor history", Entry.allToJSON())
+            val clip = ClipData.newPlainText("Exported Arjen Simulathor history", HistoryEntry.allToJSON())
             clipboardManager.setPrimaryClip(clip)
         }
 
@@ -39,9 +39,9 @@ class SettingsFragment : Fragment() {
 
             if(mergeText != "") {
                 try {
-                    val mergeList = Entry.createListFromJSONArray(JSONArray(mergeText))
-                    Entry.mergeExternal(mergeList)
-                    pref.edit().remove("history").putString("history", Entry.allToJSON()).apply()
+                    val mergeList = HistoryEntry.createListFromJSONArray(JSONArray(mergeText))
+                    HistoryEntry.mergeExternal(mergeList)
+                    pref.edit().remove("history").putString("history", HistoryEntry.allToJSON()).apply()
                     Toast.makeText(activity.applicationContext, "La fusion a été effectuée!", Toast.LENGTH_SHORT).show()
                 }catch (e: org.json.JSONException){
                     Toast.makeText(activity.applicationContext, "La fusion a échoué, essayer de ré-exporter les données.", Toast.LENGTH_SHORT).show()

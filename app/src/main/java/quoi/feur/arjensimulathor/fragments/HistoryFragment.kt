@@ -10,7 +10,7 @@ import android.widget.ListView
 import quoi.feur.arjensimulathor.R
 import quoi.feur.arjensimulathor.activities.EntryActivity
 import quoi.feur.arjensimulathor.adapters.HistoryAdapter
-import quoi.feur.arjensimulathor.entities.Entry
+import quoi.feur.arjensimulathor.entities.HistoryEntry
 
 
 class HistoryFragment : Fragment() {
@@ -26,7 +26,7 @@ class HistoryFragment : Fragment() {
         val list = view.findViewById<ListView>(R.id.historyView)
 
 
-        adapter = HistoryAdapter(Entry.all, activity.applicationContext)
+        adapter = HistoryAdapter(HistoryEntry.all, activity.applicationContext)
         list.adapter = adapter
 
 

@@ -13,7 +13,7 @@ import android.widget.*
 import org.json.JSONArray
 import android.widget.ArrayAdapter
 import quoi.feur.arjensimulathor.R
-import quoi.feur.arjensimulathor.entities.Entry
+import quoi.feur.arjensimulathor.entities.HistoryEntry
 import java.time.LocalDateTime
 
 class HomeFragment : Fragment() {
@@ -33,11 +33,11 @@ class HomeFragment : Fragment() {
         var historyString = pref.getString("history", "")
 
         if(historyString == ""){
-            historyString = JSONArray(arrayOf<Entry>()).toString()
+            historyString = JSONArray(arrayOf<HistoryEntry>()).toString()
             pref.edit().putString("history", historyString).apply()
         }
 
-        Entry.all = Entry.createListFromJSONArray(JSONArray(historyString))
+        HistoryEntry.all = HistoryEntry.createListFromJSONArray(JSONArray(historyString))
 
 
         val commentEdit = view.findViewById<EditText>(R.id.comment)
@@ -56,9 +56,9 @@ class HomeFragment : Fragment() {
                 Toast.makeText(activity.applicationContext, "Please input the person and the amount.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            val newEntry = Entry(LocalDateTime.now(), person, moneyAmount.toDouble(), commentEdit.text.toString())
-            if(Entry.addToAll(newEntry)) {
-                pref.edit().remove("history").putString("history", Entry.allToJSON()).apply()
+            val newEntry = HistoryEntry(LocalDateTime.now(), person, moneyAmount.toDouble(), commentEdit.text.toString())
+            if(HistoryEntry.addToAll(newEntry)) {
+                pref.edit().remove("history").putString("history", HistoryEntry.allToJSON()).apply()
 
                 checkWhoIsRicher(view)
 
@@ -74,7 +74,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun checkWhoIsRicher(view: View){
-        val differenceList = Entry.getDifference()
+        val differenceList = HistoryEntry.getDifference()
         val richer = differenceList[0]
         val difference = differenceList[1].toDouble()
         val text = view.findViewById<TextView>(R.id.theWinner)

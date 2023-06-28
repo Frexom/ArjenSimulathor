@@ -26,7 +26,7 @@
         android:id="@+id/historyView"
         style="@style/ListViewStyle.Night"
         android:layout_width="match_parent"
-        android:layout_height="664dp"
+        android:layout_height="0dp"
         android:background="@color/black"
         android:divider="@color/black"
         android:dividerHeight="5dp"
