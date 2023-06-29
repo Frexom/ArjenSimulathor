@@ -46,6 +46,7 @@ class HistoryFragment : Fragment() {
             val intent = Intent(activity.applicationContext, EntryActivity::class.java)
             intent.putExtra("entryPos", position)
             startActivity(intent)
+            dataChanged()
         }
 
         optionsMenuButton = view.findViewById<ImageButton>(R.id.optionsMenu)
@@ -64,7 +65,7 @@ class HistoryFragment : Fragment() {
 
     private fun optionsMenuCallback(activity: Activity){
         val popupMenu = PopupMenu(activity, optionsMenuButton)
-        popupMenu.menuInflater.inflate(R.menu.history_menu, popupMenu.menu)
+        popupMenu.menuInflater.inflate(R.menu.menu_history, popupMenu.menu)
         popupMenu.setOnMenuItemClickListener {
             if(it.itemId == R.id.exportHistory) {
                 exportHistory(activity)
@@ -87,7 +88,7 @@ class HistoryFragment : Fragment() {
     private fun showMergeHistoryDialog(activity: Activity){
         val dialog = Dialog(activity)
 
-        dialog.setContentView(R.layout.history_merge_popup)
+        dialog.setContentView(R.layout.popup_history_merge)
         dialog.findViewById<Button>(R.id.submitButton).setOnClickListener {
             mergeHistory(dialog, activity)
         }
@@ -101,17 +102,21 @@ class HistoryFragment : Fragment() {
         if(mergeText != "") {
             try {
                 val mergeList = HistoryEntry.createListFromJSONArray(JSONArray(mergeText))
-                HistoryEntry.mergeExternal(mergeList)
-                pref!!.edit().remove("history").putString("history", HistoryEntry.allToJSON()).apply()
-                adapter!!.notifyDataSetChanged()
-                Toast.makeText(activity.applicationContext, "La fusion a été effectuée!", Toast.LENGTH_SHORT).show()
+                val count = HistoryEntry.mergeExternal(mergeList)
+                dataChanged()
+                Toast.makeText(activity.applicationContext, "$count item(s) ont été importés!", Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             }catch (e: org.json.JSONException){
                 Toast.makeText(activity.applicationContext, "La fusion a échoué, essayer de ré-exporter les données.", Toast.LENGTH_SHORT).show()
             }
         }
         else{
-            Toast.makeText(activity.applicationContext, "Veuillez entrer des données pour effectuer une fusion.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity.applicationContext, "Veuillez entrer des données à fusionner.", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun dataChanged(){
+        pref!!.edit().remove("history").putString("history", HistoryEntry.allToJSON()).apply()
+        adapter!!.notifyDataSetChanged()
     }
 }

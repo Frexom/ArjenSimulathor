@@ -44,7 +44,7 @@ class HomeFragment : Fragment() {
         val amount = view.findViewById<EditText>(R.id.expenseAmount)
 
         val roller = view.findViewById<Spinner>(R.id.expensePerson)
-        val personsAdapter = ArrayAdapter(activity.applicationContext, R.layout.spinner_item, arrayOf("Bouéfoubi", "Gobi"))
+        val personsAdapter = ArrayAdapter(activity.applicationContext, R.layout.spinner_item_home, arrayOf("Bouéfoubi", "Gobi"))
         roller.adapter = personsAdapter
 
         checkWhoIsRicher(view)

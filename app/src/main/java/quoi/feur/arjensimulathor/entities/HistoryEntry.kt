@@ -77,13 +77,16 @@ class HistoryEntry(val datetime: LocalDateTime, val person: String, val amount: 
             return false
         }
 
-        fun mergeExternal(mergeList: LinkedList<HistoryEntry>){
+        fun mergeExternal(mergeList: LinkedList<HistoryEntry>):Int{
+            var counter = 0
             mergeList.forEach{mergeItem ->
                 if(!checkIfPresent(mergeItem)){
                     all.add(mergeItem)
+                    counter++
                 }
             }
             sortByDate()
+            return counter
         }
 
         private fun sortByDate(){

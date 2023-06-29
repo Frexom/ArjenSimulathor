@@ -38,7 +38,7 @@ class GroceryAdapter(entries: LinkedList<GroceryEntry>, applicationContext: Cont
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var view = convertView
         if(view == null) {
-            view = inflater.inflate(R.layout.grocery_list_item, parent, false)
+            view = inflater.inflate(R.layout.list_item_groceries, parent, false)
         }
         view!!
 

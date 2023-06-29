@@ -59,6 +59,26 @@ class GroceryEntry(val amount:Double, val unit:GroceryUnit, val name:String, val
             return true
         }
 
+        fun importExternal(entriesToAdd: LinkedList<GroceryEntry>):Int{
+            var counter = 0
+            entriesToAdd.forEach{
+                if(!isPresent(it)){
+                    all.add(it)
+                    counter++
+                }
+            }
+            sortByDate()
+            return counter
+        }
+
+        private fun isPresent(entry:GroceryEntry): Boolean{
+            all.forEach {
+                if(it.name == entry.name && it.amount == entry.amount && it.unit == entry.unit && it.datetime == entry.datetime)
+                    return true
+            }
+            return false
+        }
+
         fun sortByDate(){
             all.sortBy {
                 it.datetime

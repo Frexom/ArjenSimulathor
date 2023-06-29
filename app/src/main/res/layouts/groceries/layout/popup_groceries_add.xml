@@ -69,11 +69,12 @@
         android:layout_marginEnd="22dp"
         android:ems="10"
         android:hint="Nom du produit..."
-        android:inputType="textPersonName"
+        android:inputType="textCapSentences"
         app:layout_constraintBottom_toBottomOf="@+id/hardcoded2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/hardcoded2"
-        app:layout_constraintTop_toTopOf="@+id/hardcoded2" />
+        app:layout_constraintTop_toTopOf="@+id/hardcoded2"
+        />
 
     <Button
         android:id="@+id/submitButton"

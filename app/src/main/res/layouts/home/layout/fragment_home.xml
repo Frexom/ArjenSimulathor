@@ -119,7 +119,7 @@
         android:layout_marginTop="18dp"
         android:ems="10"
         android:hint="Commentaire"
-        android:inputType="textPersonName"
+        android:inputType="textCapSentences"
         android:textColorHint="@color/grey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

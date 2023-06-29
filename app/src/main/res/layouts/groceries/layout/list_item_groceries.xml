@@ -15,7 +15,8 @@
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="5dp"/>
 
     <CheckBox
         android:id="@+id/groceriesCheckbox"
@@ -24,7 +25,7 @@
         android:layout_alignBottom="@+id/grocerySubHeading"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
         android:backgroundTint="@color/white"
         android:buttonTint="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/grocerySubHeading"
@@ -39,6 +40,7 @@
         android:text="CustomListItem SubHeading"
         android:textColor="@color/grey"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/groceryHeading" />
+        app:layout_constraintTop_toBottomOf="@+id/groceryHeading"
+        android:layout_marginStart="5dp"/>
 
 </RelativeLayout>

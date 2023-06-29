@@ -74,12 +74,12 @@ class GroceriesFragment : Fragment() {
         val activity = requireActivity()
         val dialog = Dialog(activity)
 
-        dialog.setContentView(R.layout.groceries_add_popup)
+        dialog.setContentView(R.layout.popup_groceries_add)
 
         val amountInput = dialog.findViewById<EditText>(R.id.inputGroceryAmount)
         val nameInput =  dialog.findViewById<EditText>(R.id.inputGroceryName)
         val unitSpinner = dialog.findViewById<Spinner>(R.id.spinnerGroceryUnit)
-        unitSpinner.adapter = ArrayAdapter(activity.applicationContext, R.layout.spinner_item, GroceryUnit.array())
+        unitSpinner.adapter = ArrayAdapter(activity.applicationContext, R.layout.spinner_item_home, GroceryUnit.array())
 
         dialog.findViewById<Button>(R.id.submitButton).setOnClickListener {
             var amount = amountInput.text.toString()
@@ -99,8 +99,7 @@ class GroceriesFragment : Fragment() {
 
             val newEntry = GroceryEntry(amount.toDouble(), unit, name, LocalDateTime.now(), false)
             GroceryEntry.addToAll(newEntry)
-            adapter!!.notifyDataSetChanged()
-            pref!!.edit().remove("groceries").putString("groceries", GroceryEntry.allToJSON()).apply()
+            dataChanged()
             dialog.dismiss()
         }
         dialog.show()
@@ -108,7 +107,7 @@ class GroceriesFragment : Fragment() {
 
     private fun optionsMenuCallback(){
         val popupMenu = PopupMenu(requireActivity(), optionsMenuButton)
-        popupMenu.menuInflater.inflate(R.menu.groceries_menu, popupMenu.menu)
+        popupMenu.menuInflater.inflate(R.menu.menu_groceries, popupMenu.menu)
         popupMenu.setOnMenuItemClickListener {
             if(it.itemId == R.id.deleteCheckedEntries) {
                 deleteCheckedEntries()
@@ -132,8 +131,7 @@ class GroceriesFragment : Fragment() {
                 GroceryEntry.all.removeAt(i)
             }
         }
-        adapter!!.notifyDataSetChanged()
-        pref!!.edit().remove("groceries").putString("groceries", GroceryEntry.allToJSON()).apply()
+        dataChanged()
     }
 
     private fun exportUncheckedEntries(){
@@ -148,7 +146,7 @@ class GroceriesFragment : Fragment() {
 
         val dialog = Dialog(activity)
 
-        dialog.setContentView(R.layout.groceries_import_popup)
+        dialog.setContentView(R.layout.popup_groceries_import)
         dialog.findViewById<Button>(R.id.submitButton).setOnClickListener {
             importExternalEntries(dialog, activity)
         }
@@ -163,20 +161,23 @@ class GroceriesFragment : Fragment() {
         if(importText != "") {
             try {
                 val entriesToAdd = GroceryEntry.createListFromJSONArray(JSONArray(importText))
-                for(entry in entriesToAdd){
-                    GroceryEntry.all.add(entry)
-                }
-                GroceryEntry.sortByDate()
-                pref!!.edit().remove("groceries").putString("groceries", GroceryEntry.allToJSON()).apply()
-                adapter!!.notifyDataSetChanged()
-                Toast.makeText(activity.applicationContext, "La liste a été importée!", Toast.LENGTH_SHORT).show()
+                val count = GroceryEntry.importExternal(entriesToAdd)
+
+
+                dataChanged()
+                Toast.makeText(activity.applicationContext, "${count} item(s) ont été importés!", Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             }catch (e: org.json.JSONException){
                 Toast.makeText(activity.applicationContext, "L'import a échoué, essayer de ré-exporter les données.", Toast.LENGTH_SHORT).show()
             }
         }
         else{
-            Toast.makeText(activity.applicationContext, "Veuillez entrer des données pour effectuer une fusion.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity.applicationContext, "Veuillez entrer des données à importer.", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun dataChanged(){
+        pref!!.edit().remove("groceries").putString("groceries", GroceryEntry.allToJSON()).apply()
+        adapter!!.notifyDataSetChanged()
     }
 }
