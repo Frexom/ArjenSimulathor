@@ -22,9 +22,9 @@ import quoi.feur.arjensimulathor.entities.HistoryEntry
 
 class HistoryFragment : Fragment() {
 
-    private var adapter: HistoryAdapter? = null
-    private var optionsMenuButton: ImageButton? = null
-    private var pref:SharedPreferences? = null
+    private lateinit var adapter: HistoryAdapter
+    private lateinit var optionsMenuButton: ImageButton
+    private lateinit var pref:SharedPreferences
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,8 +49,8 @@ class HistoryFragment : Fragment() {
             dataChanged()
         }
 
-        optionsMenuButton = view.findViewById<ImageButton>(R.id.optionsMenu)
-        optionsMenuButton!!.setOnClickListener{
+        optionsMenuButton = view.findViewById(R.id.optionsMenu)
+        optionsMenuButton.setOnClickListener{
             optionsMenuCallback(activity)
         }
 
@@ -60,7 +60,7 @@ class HistoryFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        adapter!!.notifyDataSetChanged()
+        adapter.notifyDataSetChanged()
     }
 
     private fun optionsMenuCallback(activity: Activity){
@@ -116,7 +116,7 @@ class HistoryFragment : Fragment() {
     }
 
     private fun dataChanged(){
-        pref!!.edit().remove("history").putString("history", HistoryEntry.allToJSON()).apply()
-        adapter!!.notifyDataSetChanged()
+        pref.edit().remove("history").putString("history", HistoryEntry.allToJSON()).apply()
+        adapter.notifyDataSetChanged()
     }
 }

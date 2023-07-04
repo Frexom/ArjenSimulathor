@@ -79,7 +79,7 @@ class GroceryEntry(val amount:Double, val unit:GroceryUnit, val name:String, val
             return false
         }
 
-        fun sortByDate(){
+        private fun sortByDate(){
             all.sortBy {
                 it.datetime
             }

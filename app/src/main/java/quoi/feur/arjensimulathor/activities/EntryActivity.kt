@@ -9,23 +9,24 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import quoi.feur.arjensimulathor.R
 import quoi.feur.arjensimulathor.entities.HistoryEntry
+import kotlin.properties.Delegates
 
 class EntryActivity : AppCompatActivity() {
 
-    var entryPosition : Int? = null
-    var entry : HistoryEntry? = null
-    var pref : SharedPreferences? = null
+    private var entryPosition by Delegates.notNull<Int>()
+    private lateinit var entry : HistoryEntry
+    private lateinit var pref : SharedPreferences
 
-    var deleteButton : Button? = null
-    var detailsHeader : TextView? = null
-    var detailsSubheader : TextView? = null
-    var fullComment : TextView? = null
+    private lateinit var deleteButton : Button
+    private lateinit var detailsHeader : TextView
+    private lateinit var detailsSubheader : TextView
+    private lateinit var fullComment : TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_entry)
 
         entryPosition = intent.getIntExtra("entryPos", -1)
-        entry = HistoryEntry.all[entryPosition!!]
+        entry = HistoryEntry.all[entryPosition]
         pref = applicationContext.getSharedPreferences("arjensim", Context.MODE_PRIVATE)
 
 
@@ -39,7 +40,7 @@ class EntryActivity : AppCompatActivity() {
         initTextViews()
 
         // Assigning callbacks
-        deleteButton!!.setOnClickListener {
+        deleteButton.setOnClickListener {
             deleteEntry()
         }
     }
@@ -53,8 +54,8 @@ class EntryActivity : AppCompatActivity() {
             builder.apply {
 
                 setPositiveButton("Oui"){ _, _ ->
-                    HistoryEntry.all.removeAt(entryPosition!!)
-                    pref!!.edit().remove("history").putString("history", HistoryEntry.allToJSON())
+                    HistoryEntry.all.removeAt(entryPosition)
+                    pref.edit().remove("history").putString("history", HistoryEntry.allToJSON())
                         .apply()
                     finish()
                 }
@@ -68,9 +69,9 @@ class EntryActivity : AppCompatActivity() {
     }
 
     private fun initTextViews(){
-        val headerText = "${entry!!.person} : ${entry!!.getAmountString()}€"
-        detailsHeader!!.text = headerText
-        detailsSubheader!!.text = entry!!.getPrettyDate()
-        fullComment!!.text = entry!!.getCleanComment()
+        val headerText = "${entry.person} : ${entry.getAmountString()}€"
+        detailsHeader.text = headerText
+        detailsSubheader.text = entry.getPrettyDate()
+        fullComment.text = entry.getCleanComment()
     }
 }

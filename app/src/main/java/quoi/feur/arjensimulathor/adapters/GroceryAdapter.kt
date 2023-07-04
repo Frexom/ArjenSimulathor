@@ -7,10 +7,8 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.CheckBox
 import android.widget.TextView
-import android.widget.Toast
 import quoi.feur.arjensimulathor.R
 import quoi.feur.arjensimulathor.entities.GroceryEntry
-import quoi.feur.arjensimulathor.entities.HistoryEntry
 import java.util.LinkedList
 
 class GroceryAdapter(entries: LinkedList<GroceryEntry>, applicationContext: Context) : BaseAdapter() {

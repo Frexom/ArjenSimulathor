@@ -21,9 +21,9 @@ import java.time.LocalDateTime
 
 class GroceriesFragment : Fragment() {
 
-    private var adapter: GroceryAdapter? = null
-    private var optionsMenuButton: ImageButton? = null
-    private var pref: SharedPreferences? = null
+    private lateinit var adapter: GroceryAdapter
+    private lateinit var optionsMenuButton: ImageButton
+    private lateinit var pref: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,11 +32,11 @@ class GroceriesFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_groceries, container, false)
 
         pref = requireActivity().applicationContext!!.getSharedPreferences("arjensim", Context.MODE_PRIVATE)!!
-        var groceriesString = pref!!.getString("groceries", "")
+        var groceriesString = pref.getString("groceries", "")
 
         if(groceriesString == ""){
             groceriesString = JSONArray(arrayOf<GroceryEntry>()).toString()
-            pref!!.edit().putString("groceries", groceriesString).apply()
+            pref.edit().putString("groceries", groceriesString).apply()
         }
 
         GroceryEntry.all = GroceryEntry.createListFromJSONArray(JSONArray(groceriesString))
@@ -57,8 +57,8 @@ class GroceriesFragment : Fragment() {
             addNewEntryDialog()
         }
 
-        optionsMenuButton = view.findViewById<ImageButton>(R.id.optionsMenu)
-        optionsMenuButton!!.setOnClickListener{
+        optionsMenuButton = view.findViewById(R.id.optionsMenu)
+        optionsMenuButton.setOnClickListener{
             optionsMenuCallback()
         }
 
@@ -67,7 +67,7 @@ class GroceriesFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        adapter!!.notifyDataSetChanged()
+        adapter.notifyDataSetChanged()
     }
 
     private fun addNewEntryDialog(){
@@ -165,7 +165,7 @@ class GroceriesFragment : Fragment() {
 
 
                 dataChanged()
-                Toast.makeText(activity.applicationContext, "${count} item(s) ont été importés!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity.applicationContext, "$count item(s) ont été importés!", Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             }catch (e: org.json.JSONException){
                 Toast.makeText(activity.applicationContext, "L'import a échoué, essayer de ré-exporter les données.", Toast.LENGTH_SHORT).show()
@@ -177,7 +177,7 @@ class GroceriesFragment : Fragment() {
     }
 
     private fun dataChanged(){
-        pref!!.edit().remove("groceries").putString("groceries", GroceryEntry.allToJSON()).apply()
-        adapter!!.notifyDataSetChanged()
+        pref.edit().remove("groceries").putString("groceries", GroceryEntry.allToJSON()).apply()
+        adapter.notifyDataSetChanged()
     }
 }

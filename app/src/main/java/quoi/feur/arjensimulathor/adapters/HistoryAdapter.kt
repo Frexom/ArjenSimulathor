@@ -46,7 +46,7 @@ class HistoryAdapter(entries: LinkedList<HistoryEntry>, applicationContext: Cont
         heading.text = item.toString()
 
         val comment = item.getCleanComment()
-        val subheadingText = if(item.comment != ""){"Commentaire : ${comment}"}else{comment}
+        val subheadingText = if(item.comment != ""){"Commentaire : $comment"}else{comment}
         subHeading.text = subheadingText
         return view
     }

@@ -10,7 +10,7 @@ class HistoryEntry(val datetime: LocalDateTime, val person: String, val amount: 
 
     companion object{
         var all: LinkedList<HistoryEntry> = LinkedList()
-        val daysOfWeek = arrayOf("Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche")
+        val daysOfWeek = arrayOf("lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche")
         val months = arrayOf("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Spetembre", "Octobre", "Novembre", "Décembre")
         fun createListFromJSONArray(array: JSONArray) : LinkedList<HistoryEntry> {
             val entryList = LinkedList<HistoryEntry>()
